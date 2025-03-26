@@ -3,6 +3,8 @@ package com.dbserver.coopvote.sessaoVotacao.domain;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import com.dbserver.coopvote.sessaoVotacao.application.controller.SessaoAberturaResquest;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -11,9 +13,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SessaoVotacao {
 	@Id
@@ -26,13 +30,13 @@ public class SessaoVotacao {
 	private StatusSessaoVotacao status;
 	private LocalDateTime dataHoraAbertura;
 	private LocalDateTime dataHoraEncerramento;
-	
-	public SessaoVotacao(UUID idPauta, Integer tempoDuracao, StatusSessaoVotacao status, LocalDateTime dataHoraAbertura,
-			LocalDateTime dataHoraEncerramento) {
-		this.idPauta = idPauta;
-		this.tempoDuracao = tempoDuracao;
-		this.status = status;
-		this.dataHoraAbertura = dataHoraAbertura;
-		this.dataHoraEncerramento = dataHoraEncerramento;
+
+
+	public SessaoVotacao(SessaoAberturaResquest novaSessao) {
+		this.idPauta = novaSessao.getIdPauta();
+		this.tempoDuracao = novaSessao.getTempoDuracao().orElse(1);
+		this.status = StatusSessaoVotacao.ABERTO;
+		this.dataHoraAbertura = LocalDateTime.now();
+		this.dataHoraEncerramento = LocalDateTime.now().plusMinutes(this.tempoDuracao);
 	}
 }
