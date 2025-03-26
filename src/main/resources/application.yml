@@ -1,0 +1,33 @@
+server:
+  servlet:
+    context-path: /coopvote
+
+logging:
+  level:
+    com.dbserver.coopvote: ${LOG_LEVEL:DEBUG}
+
+spring:
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/postgres}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      poolName: SpringBootJPAHikariCP
+      minimumIdle: 20
+      maximumPoolSize: 200
+      connectionTimeout: 30000
+      idleTimeout: 30000
+      maxLifetime: 2000000
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      properties:
+        hibernate:
+          default_schema: wakacop
