@@ -3,6 +3,7 @@ package com.dbserver.coopvote.sessaoVotacao.domain;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import com.dbserver.coopvote.pauta.domain.Pauta;
 import com.dbserver.coopvote.sessaoVotacao.application.controller.SessaoAberturaResquest;
 
 import jakarta.persistence.Column;
@@ -32,8 +33,8 @@ public class SessaoVotacao {
 	private LocalDateTime dataHoraEncerramento;
 
 
-	public SessaoVotacao(SessaoAberturaResquest novaSessao) {
-		this.idPauta = novaSessao.getIdPauta();
+	public SessaoVotacao(SessaoAberturaResquest novaSessao, Pauta pauta) {
+		this.idPauta = pauta.getId();
 		this.tempoDuracao = novaSessao.getTempoDuracao().orElse(1);
 		this.status = StatusSessaoVotacao.ABERTO;
 		this.dataHoraAbertura = LocalDateTime.now();
