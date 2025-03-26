@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dbserver.coopvote.pauta.application.service.PautaService;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -23,7 +22,7 @@ public class PautaAPI {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public PautaCriadaResponse cadastraPauta(@RequestBody @Valid PautaNovaRequest pauta) {
+    public PautaCriadaResponse cadastraPauta(@RequestBody PautaNovaRequest pauta) {
         log.info("[start] PautaAPI - cadastraPauta");
         PautaCriadaResponse pautaCriada = pautaService.cadastraPauta(pauta);
         log.debug("[finish] PautaAPI - cadastraPauta");
