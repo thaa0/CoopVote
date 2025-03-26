@@ -1,12 +1,15 @@
 package com.dbserver.coopvote.pauta.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
+
+import com.dbserver.coopvote.pauta.application.controller.PautaNovaRequest;
 
 @Entity
 @Getter
@@ -21,11 +24,11 @@ public class Pauta {
     private UUID idAssociadoCriador;
     private LocalDateTime dataHoraCriacao;
 
-    public Pauta(String titulo, LocalDateTime dataHoraCriacao, UUID idAssociadoCriador, String descricao) {
-        this.titulo = titulo;
-        this.dataHoraCriacao = dataHoraCriacao;
-        this.idAssociadoCriador = idAssociadoCriador;
-        this.descricao = descricao;
-    }
+	public Pauta(PautaNovaRequest pauta) {
+		this.titulo = pauta.getTitulo();
+        this.idAssociadoCriador = pauta.getIdAssociadoCriador();
+        this.descricao = pauta.getDescricao();
+        this.dataHoraCriacao = LocalDateTime.now();
+	}
 
 }
