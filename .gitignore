@@ -3,6 +3,12 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+# Ignorar arquivos do PostgreSQL
+/database/data/
+/database/pgdata/
+/*.db
+/*.sql
+
 
 ### STS ###
 .apt_generated
