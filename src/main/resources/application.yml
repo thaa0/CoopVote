@@ -16,7 +16,7 @@ spring:
     hikari:
       poolName: SpringBootJPAHikariCP
       minimumIdle: 20
-      maximumPoolSize: 200#
+      maximumPoolSize: 200
       connectionTimeout: 30000
       idleTimeout: 30000
       maxLifetime: 2000000
@@ -25,9 +25,13 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
       properties:
         hibernate:
           default_schema: wakacop
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui
