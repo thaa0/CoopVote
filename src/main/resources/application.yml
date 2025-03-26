@@ -16,7 +16,7 @@ spring:
     hikari:
       poolName: SpringBootJPAHikariCP
       minimumIdle: 20
-      maximumPoolSize: 200
+      maximumPoolSize: 200#
       connectionTimeout: 30000
       idleTimeout: 30000
       maxLifetime: 2000000
