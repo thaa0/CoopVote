@@ -8,6 +8,7 @@ import java.util.UUID;
 import com.dbserver.coopvote.pauta.domain.Pauta;
 import com.dbserver.coopvote.sessaoVotacao.application.controller.SessaoAberturaResquest;
 
+import com.dbserver.coopvote.sessaoVotacao.application.controller.VotoRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -41,5 +42,27 @@ public class SessaoVotacao {
 		this.dataHoraAbertura = LocalDateTime.now();
 		this.dataHoraEncerramento = LocalDateTime.now().plusMinutes(this.tempoDuracao);
 		this.votos = new HashMap<>();
+	}
+
+    public Voto recebeVoto(VotoRequest novoVoto) {
+		validaSessaoAberta();
+		validaAssociado();
+		Voto voto = new Voto(this, novoVoto);
+		votos.put(novoVoto.getCpfAssociado(), voto);
+		return voto;
+    }
+
+	private void validaAssociado() {
+		//validaVotoDuplicado
+		//validaAptidaoVoto
+	}
+
+	private void validaSessaoAberta() {
+		atualizaStatus();
+		//seSessaoFechada throw new runtime exception
+	}
+
+	private void atualizaStatus() {
+		//Se for depois do encerramento fecha seesao e obtemresultado
 	}
 }

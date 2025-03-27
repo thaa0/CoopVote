@@ -1,13 +1,16 @@
 package com.dbserver.coopvote.sessaoVotacao.domain;
 
+import com.dbserver.coopvote.sessaoVotacao.application.controller.VotoRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Voto {
     @Id
@@ -21,10 +24,10 @@ public class Voto {
     private OpcaoVoto opcaoVoto;
     private LocalDateTime dataHoraVoto;
 
-    public Voto(SessaoVotacao sessaoVotacao, String cpfAssociado, OpcaoVoto opcaoVoto, LocalDateTime dataHoraVoto) {
+    public Voto(SessaoVotacao sessaoVotacao, VotoRequest novoVoto) {
         this.sessaoVotacao = sessaoVotacao;
-        this.cpfAssociado = cpfAssociado;
-        this.opcaoVoto = opcaoVoto;
-        this.dataHoraVoto = dataHoraVoto;
+        this.cpfAssociado = novoVoto.getCpfAssociado();
+        this.opcaoVoto = novoVoto.getOpcaoVoto();
+        this.dataHoraVoto = LocalDateTime.now();
     }
 }
