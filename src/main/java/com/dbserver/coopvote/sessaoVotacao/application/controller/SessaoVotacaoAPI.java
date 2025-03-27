@@ -1,16 +1,14 @@
 package com.dbserver.coopvote.sessaoVotacao.application.controller;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.dbserver.coopvote.sessaoVotacao.application.service.SessaoVotacaoService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/sessao")
@@ -27,6 +25,15 @@ public class SessaoVotacaoAPI {
 		SessaoAbertaResponse sessaoAbertaResponse = sessaoVotacaoService.abreSessao(novaSessao);
 		log.debug("[finish] SessaoVotacaoAPI - abreSessao");
 		return sessaoAbertaResponse; 
+	}
+
+	@PostMapping("/{idSessaoVotacao}/voto")
+	@ResponseStatus(HttpStatus.CREATED)
+	VotoResponse recebeVoto(@PathVariable UUID idSessaoVotacao, @RequestBody VotoRequest novoVoto){
+		log.info("[start] SessaoVotacaoAPI - recebeVoto");
+		VotoResponse votoResponse = sessaoVotacaoService.registraVoto(idSessaoVotacao, novoVoto);
+		log.debug("[finish] SessaoVotacaoAPI - recebeVoto");
+		return votoResponse;
 	}
 
 }
