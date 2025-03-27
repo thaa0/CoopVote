@@ -13,8 +13,6 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity
 @Getter
@@ -26,6 +24,8 @@ public class SessaoVotacao {
 	private UUID id;
 	private UUID idPauta;
 	private Integer tempoDuracao;
+	@Embedded
+	private ResultadoSessao resultado;
 	@Enumerated(EnumType.STRING)
 	private StatusSessaoVotacao status;
 	private LocalDateTime dataHoraAbertura;
@@ -46,23 +46,59 @@ public class SessaoVotacao {
 
     public Voto recebeVoto(VotoRequest novoVoto) {
 		validaSessaoAberta();
-		validaAssociado();
+		validaAssociado(novoVoto.getCpfAssociado());
 		Voto voto = new Voto(this, novoVoto);
 		votos.put(novoVoto.getCpfAssociado(), voto);
 		return voto;
     }
 
-	private void validaAssociado() {
-		//validaVotoDuplicado
+	private void validaAssociado(String cpfAssociado) {
+		validaVotoDuplicado(cpfAssociado);
 		//validaAptidaoVoto
+	}
+
+	private void validaVotoDuplicado(String cpfAssociado) {
+		if (votos.containsKey(cpfAssociado)){
+			throw new RuntimeException("Associado ja votou nessa sessao!");
+		}
 	}
 
 	private void validaSessaoAberta() {
 		atualizaStatus();
-		//seSessaoFechada throw new runtime exception
+		if (status.equals(StatusSessaoVotacao.FECHADO)){
+			throw new RuntimeException("Esta sessão não aceita mais votos!");
+		}
 	}
 
 	private void atualizaStatus() {
-		//Se for depois do encerramento fecha seesao e obtemresultado
+		if(LocalDateTime.now().isAfter(dataHoraEncerramento)){
+			this.status = StatusSessaoVotacao.FECHADO;
+			this.resultado = obtemResultado();
+		}
+	}
+
+	public ResultadoSessao obtemResultado() {
+		int totalVotos = getTotalVotos();
+		long TotalVotosSim = getTotalSim();
+		long TotalVotosNao = getTotalNao();
+		return new ResultadoSessao(totalVotos, TotalVotosSim, TotalVotosNao);
+	}
+
+	private long getTotalSim() {
+		return calculaOpcaoVotos(OpcaoVoto.SIM);
+	}
+
+	private long getTotalNao() {
+		return calculaOpcaoVotos(OpcaoVoto.NAO);
+	}
+
+	private long calculaOpcaoVotos(OpcaoVoto opcaoVoto) {
+		return votos.values().stream()
+				.filter(voto -> voto.opcaoIgual(opcaoVoto))
+				.count();
+	}
+
+	private int getTotalVotos() {
+		return this.votos.size();
 	}
 }

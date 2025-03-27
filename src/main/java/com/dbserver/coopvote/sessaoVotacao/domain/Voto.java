@@ -30,4 +30,8 @@ public class Voto {
         this.opcaoVoto = novoVoto.getOpcaoVoto();
         this.dataHoraVoto = LocalDateTime.now();
     }
+
+    public boolean opcaoIgual(OpcaoVoto opcaoVoto) {
+        return this.opcaoVoto.equals(opcaoVoto);
+    }
 }
