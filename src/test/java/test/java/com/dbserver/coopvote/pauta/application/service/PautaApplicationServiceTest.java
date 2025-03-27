@@ -1,8 +1,9 @@
-package com.dbserver.coopvote.pauta.application.service;
+package test.java.com.dbserver.coopvote.pauta.application.service;
 
 import com.dbserver.coopvote.pauta.application.controller.PautaCriadaResponse;
 import com.dbserver.coopvote.pauta.application.controller.PautaNovaRequest;
 import com.dbserver.coopvote.pauta.application.repository.PautaRepository;
+import com.dbserver.coopvote.pauta.application.service.PautaApplicationService;
 import com.dbserver.coopvote.pauta.domain.Pauta;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
