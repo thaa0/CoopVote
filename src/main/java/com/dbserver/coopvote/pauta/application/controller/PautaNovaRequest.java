@@ -1,7 +1,6 @@
 package com.dbserver.coopvote.pauta.application.controller;
 
 import java.util.UUID;
-
 import lombok.Builder;
 import lombok.Getter;
 
