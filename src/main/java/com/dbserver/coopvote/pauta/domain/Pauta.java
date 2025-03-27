@@ -1,7 +1,6 @@
 package com.dbserver.coopvote.pauta.domain;
 
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

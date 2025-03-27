@@ -6,8 +6,10 @@ import java.util.UUID;
 import com.dbserver.coopvote.pauta.domain.Pauta;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class PautaCriadaResponse {
 	private UUID id;
     private String titulo;
