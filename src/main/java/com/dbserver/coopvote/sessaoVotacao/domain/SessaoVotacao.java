@@ -1,21 +1,19 @@
 package com.dbserver.coopvote.sessaoVotacao.domain;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import com.dbserver.coopvote.pauta.domain.Pauta;
 import com.dbserver.coopvote.sessaoVotacao.application.controller.SessaoAberturaResquest;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity
 @Getter
@@ -32,6 +30,9 @@ public class SessaoVotacao {
 	private LocalDateTime dataHoraAbertura;
 	private LocalDateTime dataHoraEncerramento;
 
+	@OneToMany(mappedBy = "sessaoVotacao", cascade = CascadeType.ALL, orphanRemoval = true)
+	@MapKey(name = "cpfAssociado")
+	private Map<String, Voto> votos;
 
 	public SessaoVotacao(SessaoAberturaResquest novaSessao, Pauta pauta) {
 		this.idPauta = pauta.getId();
@@ -39,5 +40,6 @@ public class SessaoVotacao {
 		this.status = StatusSessaoVotacao.ABERTO;
 		this.dataHoraAbertura = LocalDateTime.now();
 		this.dataHoraEncerramento = LocalDateTime.now().plusMinutes(this.tempoDuracao);
+		this.votos = new HashMap<>();
 	}
 }
