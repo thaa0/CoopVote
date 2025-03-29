@@ -1,6 +1,6 @@
 # Desafio Votação
 
-[![Run in Postman](https://run.pstmn.io/button.svg)]()
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://elements.getpostman.com/redirect?entityId=36193286-5daabad4-6d83-4f36-b3f8-9a3d475d8e7a&entityType=collection)
 
 ## Descrição
 
@@ -63,7 +63,7 @@ CPF válido é o CPF em situação regular
    ```bash
    ./mvnw spring-boot:run
    ```
-6. A API estará disponível em `http://localhost:8080/coopvote`.
+6. A API estará disponível para teste no swagger: `http://localhost:8080/coopvote/swagger-ui/`.
 
 ## Testes
 
