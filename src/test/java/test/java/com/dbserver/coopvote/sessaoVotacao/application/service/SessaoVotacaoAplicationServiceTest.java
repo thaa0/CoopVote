@@ -52,6 +52,26 @@ class SessaoVotacaoAplicationServiceTest {
         assertEquals(1, sessaoResponse.getTempoDuracao());
         verify(sessaoVotacaoRepository, times(1)).save(any(SessaoVotacao.class));
     }
+    @Test
+    public void deveAbrirSessaoQuandoDadosValidos(){
+        UUID idAssociadoCriador = UUID.randomUUID();
+        PautaNovaRequest request = PautaNovaRequest.builder()
+                .titulo("Aprovação do Novo Plano de Benefícios")
+                .descricao("Será discutida a aprovação do novo plano de benefícios para os associados.")
+                .idAssociadoCriador(idAssociadoCriador)
+                .build();
+        Pauta pauta = new Pauta(request);
+        SessaoAberturaResquest sessaoRequest = SessaoAberturaResquest.builder()
+                .idPauta(pauta.getId())
+                .tempoDuracao(2)
+                .build();
+
+        when(pautaRepository.buscaPautaPorId(pauta.getId())).thenReturn(pauta);
+        SessaoAbertaResponse sessaoResponse = sessaoVotacaoAplicationService.abreSessao(sessaoRequest);
+
+        assertEquals(2, sessaoResponse.getTempoDuracao());
+        verify(sessaoVotacaoRepository, times(1)).save(any(SessaoVotacao.class));
+    }
 
     @Test
     public void naoDeveAbrirSessaoQuandoIdPautaNaoExiste(){
