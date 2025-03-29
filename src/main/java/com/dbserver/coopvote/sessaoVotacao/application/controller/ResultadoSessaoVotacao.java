@@ -1,6 +1,7 @@
 package com.dbserver.coopvote.sessaoVotacao.application.controller;
 
 import com.dbserver.coopvote.sessaoVotacao.domain.ResultadoSessao;
+import com.dbserver.coopvote.sessaoVotacao.domain.SessaoVotacao;
 import com.dbserver.coopvote.sessaoVotacao.domain.StatusSessaoVotacao;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.EnumType;
@@ -18,6 +19,18 @@ public class ResultadoSessaoVotacao {
     private StatusSessaoVotacao status;
     private LocalDateTime dataHoraAbertura;
     private LocalDateTime dataHoraEncerramento;
-    @Embedded
-    private ResultadoSessao resultado;
+    private int totalVotos;
+    private long totalSim;
+    private long totalNao;
+
+    public ResultadoSessaoVotacao(SessaoVotacao sessao) {
+        this.id = sessao.getId();
+        this.idPauta = sessao.getIdPauta();
+        this.status = sessao.getStatus();
+        this.dataHoraAbertura = sessao.getDataHoraAbertura();
+        this.dataHoraEncerramento = sessao.getDataHoraEncerramento();
+        this.totalVotos = sessao.getTotalVotos();
+        this.totalSim = sessao.getTotalSim();
+        this.totalNao = sessao.getTotalNao();
+    }
 }

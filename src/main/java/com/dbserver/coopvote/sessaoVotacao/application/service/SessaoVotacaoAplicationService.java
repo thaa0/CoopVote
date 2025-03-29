@@ -1,15 +1,12 @@
 package com.dbserver.coopvote.sessaoVotacao.application.service;
 
 import com.dbserver.coopvote.associado.application.service.AssociadoService;
-import com.dbserver.coopvote.sessaoVotacao.application.controller.VotoRequest;
-import com.dbserver.coopvote.sessaoVotacao.application.controller.VotoResponse;
+import com.dbserver.coopvote.sessaoVotacao.application.controller.*;
 import com.dbserver.coopvote.sessaoVotacao.domain.Voto;
 import org.springframework.stereotype.Service;
 
 import com.dbserver.coopvote.pauta.application.repository.PautaRepository;
 import com.dbserver.coopvote.pauta.domain.Pauta;
-import com.dbserver.coopvote.sessaoVotacao.application.controller.SessaoAbertaResponse;
-import com.dbserver.coopvote.sessaoVotacao.application.controller.SessaoAberturaResquest;
 import com.dbserver.coopvote.sessaoVotacao.application.repository.SessaoVotacaoRepository;
 import com.dbserver.coopvote.sessaoVotacao.domain.SessaoVotacao;
 
@@ -45,6 +42,16 @@ public class SessaoVotacaoAplicationService implements SessaoVotacaoService {
 		sessaoVotacaoRepository.save(sessao);
 		log.debug("[finish] SessaoVotacaoAplicationService - registraVoto");
 		return new VotoResponse(voto);
+	}
+
+	@Override
+	public ResultadoSessaoVotacao buscaResultadoSessao(UUID idSessaoVotacao) {
+		log.info("[start] SessaoVotacaoAplicationService - buscaResultadoSessao");
+		SessaoVotacao sessao = sessaoVotacaoRepository.buscaSessaoPorId(idSessaoVotacao);
+		sessao.atualizaStatus();
+		sessao.obtemResultado();
+		log.debug("[finish] SessaoVotacaoAplicationService - buscaResultadoSessao");
+		return new ResultadoSessaoVotacao(sessao);
 	}
 
 }

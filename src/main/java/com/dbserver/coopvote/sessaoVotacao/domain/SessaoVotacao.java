@@ -25,8 +25,9 @@ public class SessaoVotacao {
 	private UUID id;
 	private UUID idPauta;
 	private Integer tempoDuracao;
-	@Embedded
-	private ResultadoSessao resultado;
+	private int totalVotos;
+	private long totalSim;
+	private long totalNao;
 	@Enumerated(EnumType.STRING)
 	private StatusSessaoVotacao status;
 	private LocalDateTime dataHoraAbertura;
@@ -43,6 +44,10 @@ public class SessaoVotacao {
 		this.dataHoraAbertura = LocalDateTime.now();
 		this.dataHoraEncerramento = LocalDateTime.now().plusMinutes(this.tempoDuracao);
 		this.votos = new HashMap<>();
+		this.totalVotos = 0;
+		this.totalSim = 0;
+		this.totalNao = 0;
+
 	}
 
     public Voto recebeVoto(VotoRequest novoVoto, AssociadoService associadoService) {
@@ -75,25 +80,24 @@ public class SessaoVotacao {
 		}
 	}
 
-	private void atualizaStatus() {
+	public void atualizaStatus() {
 		if(LocalDateTime.now().isAfter(dataHoraEncerramento)){
 			this.status = StatusSessaoVotacao.FECHADO;
-			this.resultado = obtemResultado();
+			obtemResultado();
 		}
 	}
 
-	public ResultadoSessao obtemResultado() {
-		int totalVotos = getTotalVotos();
-		long TotalVotosSim = getTotalSim();
-		long TotalVotosNao = getTotalNao();
-		return new ResultadoSessao(totalVotos, TotalVotosSim, TotalVotosNao);
+	public void obtemResultado() {
+		this.totalVotos = totalDeVotos();
+		this.totalSim = totalVotoSim();
+		this.totalNao = totalVotoNao();
 	}
 
-	private long getTotalSim() {
+	private long totalVotoSim() {
 		return calculaOpcaoVotos(OpcaoVoto.SIM);
 	}
 
-	private long getTotalNao() {
+	private long totalVotoNao() {
 		return calculaOpcaoVotos(OpcaoVoto.NAO);
 	}
 
@@ -103,7 +107,7 @@ public class SessaoVotacao {
 				.count();
 	}
 
-	private int getTotalVotos() {
+	private int totalDeVotos() {
 		return this.votos.size();
 	}
 }
