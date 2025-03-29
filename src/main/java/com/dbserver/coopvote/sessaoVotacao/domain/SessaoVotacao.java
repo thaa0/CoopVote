@@ -15,6 +15,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -73,7 +74,7 @@ public class SessaoVotacao {
 		}
 	}
 
-	private void validaSessaoAberta() {
+	public void validaSessaoAberta() {
 		atualizaStatus();
 		if (status.equals(StatusSessaoVotacao.FECHADO)){
 			throw new RuntimeException("Esta sessão não aceita mais votos!");
