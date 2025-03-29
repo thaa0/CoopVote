@@ -1,4 +1,4 @@
-package test.java.com.dbserver.coopvote.pauta.application.service;
+package com.dbserver.coopvote.pauta.application.service;
 
 import com.dbserver.coopvote.pauta.application.controller.PautaCriadaResponse;
 import com.dbserver.coopvote.pauta.application.controller.PautaNovaRequest;
