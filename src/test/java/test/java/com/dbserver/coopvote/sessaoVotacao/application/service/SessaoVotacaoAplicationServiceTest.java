@@ -40,6 +40,8 @@ class SessaoVotacaoAplicationServiceTest {
     private PautaRepository pautaRepository;
     @Mock
     private AssociadoService associadoService;
+    @Mock
+    private SessaoVotacao sessaoVotacao;
 
     @Test
     public void deveUsarDuracaoPadraoDeUmMinutoQuandoDuracaoNaoForInformadaAoAbrirSessao(){
@@ -145,5 +147,37 @@ class SessaoVotacaoAplicationServiceTest {
         verify(sessaoVotacaoRepository, times(0)).save(sessao);
         verify(sessaoVotacaoRepository, times(1)).buscaSessaoPorId(sessao.getId());
         assertThat(exception.getMessage()).isEqualTo("CPF Não é válido para votação!");
+    }
+
+    @Test
+    public void naoDeveRegistrarVotoQuandoSessaoFechada(){
+        UUID idAssociadoCriador = UUID.randomUUID();
+        PautaNovaRequest request = PautaNovaRequest.builder()
+                .titulo("Aprovação do Novo Plano de Benefícios")
+                .descricao("Será discutida a aprovação do novo plano de benefícios para os associados.")
+                .idAssociadoCriador(idAssociadoCriador)
+                .build();
+        Pauta pauta = new Pauta(request);
+
+        SessaoAberturaResquest sessaoRequest = SessaoAberturaResquest.builder()
+                .idPauta(pauta.getId())
+                .tempoDuracao(0)
+                .build();
+        SessaoVotacao sessao = new SessaoVotacao(sessaoRequest, pauta);
+        String cpfValido = "63017285995";
+        VotoRequest votoRequest = VotoRequest.builder()
+                .cpfAssociado(cpfValido)
+                .opcaoVoto(OpcaoVoto.SIM)
+                .build();
+
+        when(sessaoVotacaoRepository.buscaSessaoPorId(sessao.getId())).thenReturn(sessao);
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            sessaoVotacaoAplicationService.registraVoto(sessao.getId(), votoRequest);
+        });
+
+        verify(sessaoVotacaoRepository, times(0)).save(sessao);
+        verify(sessaoVotacaoRepository, times(1)).buscaSessaoPorId(sessao.getId());
+        assertThat(exception.getMessage()).isEqualTo("Esta sessão não aceita mais votos!");
     }
 }
