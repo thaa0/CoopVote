@@ -1,5 +1,6 @@
 package com.dbserver.coopvote.sessaoVotacao.application.controller;
 
+import com.dbserver.coopvote.sessaoVotacao.domain.ResultadoSessao;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +35,15 @@ public class SessaoVotacaoAPI {
 		VotoResponse votoResponse = sessaoVotacaoService.registraVoto(idSessaoVotacao, novoVoto);
 		log.debug("[finish] SessaoVotacaoAPI - recebeVoto");
 		return votoResponse;
+	}
+
+	@GetMapping("/{idSessaoVotacao}/resultado")
+	@ResponseStatus(HttpStatus.ACCEPTED)
+	ResultadoSessaoVotacao obtemResultadoDaSessao(@PathVariable UUID idSessaoVotacao){
+		log.info("[start] SessaoVotacaoAPI - buscaResultadoVotacao");
+		ResultadoSessaoVotacao resultadoSessao = sessaoVotacaoService.buscaResultadoSessao(idSessaoVotacao);
+		log.debug("[finish] SessaoVotacaoAPI - buscaResultadoVotacao");
+		return resultadoSessao;
 	}
 
 }
