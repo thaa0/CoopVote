@@ -1,5 +1,6 @@
 package com.dbserver.coopvote.sessaoVotacao.application.service;
 
+import com.dbserver.coopvote.associado.application.service.AssociadoService;
 import com.dbserver.coopvote.sessaoVotacao.application.controller.VotoRequest;
 import com.dbserver.coopvote.sessaoVotacao.application.controller.VotoResponse;
 import com.dbserver.coopvote.sessaoVotacao.domain.Voto;
@@ -24,6 +25,7 @@ public class SessaoVotacaoAplicationService implements SessaoVotacaoService {
 
 	private final SessaoVotacaoRepository sessaoVotacaoRepository;
 	private final PautaRepository pautaRepository;
+	private final AssociadoService associadoService;
 
 	@Override
 	public SessaoAbertaResponse abreSessao(SessaoAberturaResquest novaSessao) {
@@ -39,7 +41,7 @@ public class SessaoVotacaoAplicationService implements SessaoVotacaoService {
 	public VotoResponse registraVoto(UUID idSessaoVotacao, VotoRequest novoVoto) {
 		log.info("[start] SessaoVotacaoAplicationService - registraVoto");
 		SessaoVotacao sessao = sessaoVotacaoRepository.buscaSessaoPorId(idSessaoVotacao);
-		Voto voto = sessao.recebeVoto(novoVoto);
+		Voto voto = sessao.recebeVoto(novoVoto, associadoService);
 		sessaoVotacaoRepository.save(sessao);
 		log.debug("[finish] SessaoVotacaoAplicationService - registraVoto");
 		return new VotoResponse(voto);

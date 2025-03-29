@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import com.dbserver.coopvote.associado.application.service.AssociadoService;
 import com.dbserver.coopvote.pauta.domain.Pauta;
 import com.dbserver.coopvote.sessaoVotacao.application.controller.SessaoAberturaResquest;
 
@@ -44,17 +45,21 @@ public class SessaoVotacao {
 		this.votos = new HashMap<>();
 	}
 
-    public Voto recebeVoto(VotoRequest novoVoto) {
+    public Voto recebeVoto(VotoRequest novoVoto, AssociadoService associadoService) {
 		validaSessaoAberta();
-		validaAssociado(novoVoto.getCpfAssociado());
+		validaAssociado(novoVoto.getCpfAssociado(), associadoService);
 		Voto voto = new Voto(this, novoVoto);
 		votos.put(novoVoto.getCpfAssociado(), voto);
 		return voto;
     }
 
-	private void validaAssociado(String cpfAssociado) {
+	private void validaAssociado(String cpfAssociado,  AssociadoService associadoService) {
 		validaVotoDuplicado(cpfAssociado);
-		//validaAptidaoVoto
+		validaAptidaoVoto(associadoService, cpfAssociado);
+	}
+
+	private void validaAptidaoVoto(AssociadoService associadoService, String cpfAssociado) {
+		associadoService.validaAptidaoAoVoto(cpfAssociado);
 	}
 
 	private void validaVotoDuplicado(String cpfAssociado) {

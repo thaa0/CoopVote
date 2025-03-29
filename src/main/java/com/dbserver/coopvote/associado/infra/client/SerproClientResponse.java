@@ -14,6 +14,10 @@ public class SerproClientResponse {
     @JsonProperty("nascimento")
     private String nascimento;
 
+    public boolean isInvalid() {
+        return !this.situacao.getCodigo().equals("0");
+    }
+
     @Getter
     private static class Situacao {
         @JsonProperty("codigo")
