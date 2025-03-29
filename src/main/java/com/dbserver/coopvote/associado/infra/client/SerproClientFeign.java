@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 @FeignClient(name = "SerproClientFeign", url = "https://gateway.apiserpro.serpro.gov.br/consulta-cpf-df-trial")
 public interface SerproClientFeign {
     @GetMapping("/v1/cpf/{cpfAssociado}")
-    public SerproClientResponse consultaCPF(@PathVariable String cpfAssociado,
+    SerproClientResponse consultaCPF(@PathVariable String cpfAssociado,
                                             @RequestHeader(value="Authorization") String authorization);
 }
